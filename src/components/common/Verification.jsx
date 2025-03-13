@@ -69,7 +69,7 @@ export default function Verification() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isWithinDeviation()) {
+    if (!isWithinDeviation()) {
       setexactlocation(false);
       toast.error("Verification Cannot Proceed. Your Device's Location must match coordinates of Entered Address");
     } else {
@@ -135,7 +135,7 @@ export default function Verification() {
             Submit
           </button>
         </form>
-        {exactocation &&
+        {!exactocation &&
         <div className="text-sm text-red-600 text-center mt-2">
           Your coordinates must match within ±1 deviation to proceed with verification. If they don't, a video recording is required to verify your device location and address.
         </div>
