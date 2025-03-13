@@ -8,6 +8,10 @@ export default function Details() {
   const { address } = useAppContext();
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when component mounts
+  }, []);
+  
+  useEffect(() => {
     console.log("🔄 Address Updated in Context:", address);
   }, [address]);
 
