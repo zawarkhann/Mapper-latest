@@ -86,6 +86,10 @@ console.log(data)
     }
   }, [address, imageUrl]);
 
+  // const verifybutton=()=>{
+  //   navigate("/verify");
+  // }
+
   return (
     <motion.div
       initial={{ opacity: 1, x: 0 }}
@@ -96,7 +100,7 @@ console.log(data)
       <h1 className="text-[58px] font-bold text-blue-600 mb-8 cursor-pointer leading-[48px] tracking-[-0.03em] font-['Plus_Jakarta_Sans']">
         mapper
       </h1>
-      <div className="relative w-96">
+      {/* <div className="relative w-96">
         <input
           type="text"
           placeholder="Enter a Valid American Address"
@@ -119,7 +123,15 @@ console.log(data)
           onClick={fetchAddress}
           alt="Filter"
         />
-      </div>
+      </div> */}
+      <div className="flex justify-center items-center w-full">
+      <button
+        className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg transition duration-300 ease-in-out"
+        onClick={() => navigate('/verification')}
+      >
+        Verify Yourself
+      </button>
+    </div>
 
       {loading && (
         <div className="mt-4 text-blue-500 text-sm font-semibold">Loading...</div>

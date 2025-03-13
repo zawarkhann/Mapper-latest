@@ -22,8 +22,8 @@ export default function Details() {
       >
         <div className="container mx-auto max-w-7xl p-4 h-screen -mt-3">
           <div className="grid lg:grid-cols-10 gap-6 h-full">
-            <LeftPanel />
             <RightPanel />
+            <LeftPanel />
           </div>
         </div>
       </motion.div>

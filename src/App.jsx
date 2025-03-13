@@ -4,6 +4,10 @@ import Navbar from "./components/common/Navbar.jsx";
 import Homee from "./pages/Home.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Details from "./pages/Details.jsx";
+import Verification from "./components/common/Verification.jsx";
+import VideoRecord from "./components/common/VideoRecord.jsx";
+
+
 
 function App() {
   
@@ -14,6 +18,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Homee />} />
         <Route path="/details" element={<Details />} />
+        <Route path="/verification" element={<Verification />} />
+        <Route path="/record" element={<VideoRecord />} />
+       
 
       
       </Routes>
