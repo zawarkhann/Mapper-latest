@@ -115,7 +115,7 @@ const VideoRecord = () => {
 
   return (
     <div className={`flex flex-col items-center p-4 ${loading ? 'opacity-50 bg-black pointer-events-none' : ''}`}>
-      {loading && <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center text-white text-xl">Uploading...</div>}
+      {loading && <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center text-white text-xl">Verifying...Please Wait</div>}
       <h1 className="text-2xl font-bold mb-4"> Recording for Verification</h1>
       {showRecorder && <video ref={videoRef} autoPlay className="w-80 h-60 bg-black rounded-lg" />}
       <div className="mt-4">
