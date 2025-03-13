@@ -91,10 +91,11 @@ const VideoRecord = () => {
 
       try {
         const response = await fetch("https://latest-mapper-2o69ujbm5-zawarkhanns-projects.vercel.app/api/v1/upload", {
-          method: "POST",
-          body: formData,
-        });
-
+            method: "POST",
+            body: formData,
+            cache: 'no-cache',
+          });
+          
         const result = await response.json();
         setLoading(false);
 
@@ -107,7 +108,8 @@ const VideoRecord = () => {
         }
       } catch (error) {
         console.error("Error during upload:", error);
-        alert("An error occurred during the upload.");
+        // alert("An error occurred during the upload.",error);
+       alert(res.status(500).json({ message: `Error uploading file: ${error.message}`, error }));
         setLoading(false);
       }
     }
