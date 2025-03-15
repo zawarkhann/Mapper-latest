@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const VideoRecord = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const videoRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
@@ -15,17 +15,27 @@ const VideoRecord = () => {
   const [loading, setLoading] = useState(false);
 
   const startRecording = async () => {
+    // Check for MediaRecorder support (common issue on iOS)
+    if (!window.MediaRecorder) {
+      alert("MediaRecorder API is not supported in your browser. Please try a different browser.");
+      return;
+    }
+
     setShowRecorder(true);
     setRecordedVideo(null);
     setDetails([]); // Clear previous details when recording again
+
     try {
       const userStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
         audio: true,
       });
       setStream(userStream);
-      videoRef.current.srcObject = userStream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = userStream;
+      }
 
+      // Get geolocation data
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLatitude(position.coords.latitude);
@@ -60,6 +70,7 @@ const VideoRecord = () => {
       mediaRecorder.start();
       setRecording(true);
 
+      // Auto-stop after 30 seconds if still recording
       setTimeout(() => {
         if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
           stopRecording();
@@ -90,26 +101,28 @@ const VideoRecord = () => {
       formData.append("file", blob, "recorded-video.mp4");
 
       try {
-        const response = await fetch("https://latest-mapper-2o69ujbm5-zawarkhanns-projects.vercel.app/api/v1/upload", {
+        const response = await fetch(
+          "https://latest-mapper-684n3fwxc-zawarkhanns-projects.vercel.app/api/v1/upload",
+          {
             method: "POST",
             body: formData,
-            cache: 'no-cache',
-          });
-          
+            cache: "no-cache",
+          }
+        );
+
         const result = await response.json();
         setLoading(false);
 
         if (result.data && result.data.downloadLink) {
           setDetails([{ ...result.data, latitude, longitude }]);
-          navigate("/details")
+          navigate("/details");
           setRecordedVideo(null); // Hide playback video after result comes
         } else {
           alert("Download link not found. Response: " + JSON.stringify(result));
         }
       } catch (error) {
         console.error("Error during upload:", error);
-        // alert("An error occurred during the upload.",error);
-       alert(res.status(500).json({ message: `Error uploading file: ${error.message}`, error }));
+        alert("Error uploading file: " + error.message);
         setLoading(false);
       }
     }
@@ -117,23 +130,43 @@ const VideoRecord = () => {
 
   return (
     <div className={`flex flex-col items-center p-4 ${loading ? 'opacity-50 bg-black pointer-events-none' : ''}`}>
-      {loading && <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center text-white text-xl">Verifying...Please Wait</div>}
-      <h1 className="text-2xl font-bold mb-4"> Recording for Verification</h1>
-      {showRecorder && <video ref={videoRef} autoPlay className="w-80 h-60 bg-black rounded-lg" />}
+      {loading && (
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center text-white text-xl">
+          Verifying...Please Wait
+        </div>
+      )}
+      <h1 className="text-2xl font-bold mb-4">Recording for Verification</h1>
+      {showRecorder && (
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className="w-80 h-60 bg-black rounded-lg"
+        />
+      )}
       <div className="mt-4">
         {!recording ? (
-          <button onClick={startRecording} className="px-4 py-2 bg-green-500 text-white rounded-lg">Start Recording</button>
+          <button onClick={startRecording} className="px-4 py-2 bg-green-500 text-white rounded-lg">
+            Start Recording
+          </button>
         ) : (
-          <button onClick={stopRecording} className="px-4 py-2 bg-red-500 text-white rounded-lg">Stop Recording</button>
+          <button onClick={stopRecording} className="px-4 py-2 bg-red-500 text-white rounded-lg">
+            Stop Recording
+          </button>
         )}
       </div>
       {recordedVideo && !showRecorder && (
         <div className="mt-4">
           <h2 className="text-xl font-semibold">Recorded Video</h2>
-          <video src={recordedVideo} controls className="w-80 h-60 mt-2 rounded-lg" />
+          <video src={recordedVideo} controls playsInline className="w-80 h-60 mt-2 rounded-lg" />
           <div className="mt-2">
-            <button onClick={startRecording} className="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2">Record Again</button>
-            <button onClick={uploadToDrive} className="px-4 py-2 bg-blue-500 text-white rounded-lg">Submit Video</button>
+            <button onClick={startRecording} className="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2">
+              Record Again
+            </button>
+            <button onClick={uploadToDrive} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+              Submit Video
+            </button>
           </div>
         </div>
       )}
@@ -146,8 +179,14 @@ const VideoRecord = () => {
               <p><strong>ID:</strong> {item.id}</p>
               <p><strong>Latitude:</strong> {item.latitude}</p>
               <p><strong>Longitude:</strong> {item.longitude}</p>
-              <p><strong>View Link:</strong> <a href={item.viewLink} target="_blank" rel="noopener noreferrer">View</a></p>
-              <p><strong>Download Link:</strong> <a href={item.downloadLink} target="_blank" rel="noopener noreferrer">Download</a></p>
+              <p>
+                <strong>View Link:</strong>{" "}
+                <a href={item.viewLink} target="_blank" rel="noopener noreferrer">View</a>
+              </p>
+              <p>
+                <strong>Download Link:</strong>{" "}
+                <a href={item.downloadLink} target="_blank" rel="noopener noreferrer">Download</a>
+              </p>
             </div>
           ))}
         </div>
