@@ -69,7 +69,7 @@ export default function Verification() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isWithinDeviation()) {
+    if (isWithinDeviation()) {
       setexactlocation(false);
       toast.error("Verification Cannot Proceed. Your Device's Location must match coordinates of Entered Address");
     } else {
