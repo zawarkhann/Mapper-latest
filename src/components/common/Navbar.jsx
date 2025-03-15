@@ -60,7 +60,7 @@ const Navbar = () => {
           src={'/assets/Notification.png'}
           alt="Notifications"
         />
-        <a href="https://video-recorder-gdrive.vercel.app/" target="_blank" rel="noopener noreferrer">
+        <a href="https://mapper-latest.vercel.app/" target="_blank" rel="noopener noreferrer">
           <img
             className="w-4 h-4 text-gray-600 hover:text-blue-500 cursor-pointer"
             src="/images.png"
