@@ -11,6 +11,8 @@ export function AppProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [chat,setchat]=useState([]);
+  const [verified,setverified] = useState("");
+  const [link, setlink]= useState("");
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -130,7 +132,7 @@ export function AppProvider({ children }) {
 
 
   return (
-    <AppContext.Provider value={{ imageUrl, setAddress, loading, error ,data,chat,setchat}}>
+    <AppContext.Provider value={{ imageUrl, setAddress, loading, error ,data,chat,setchat,verified,setverified,link, setlink}}>
       {children}
     </AppContext.Provider>
   );

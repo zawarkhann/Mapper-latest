@@ -129,7 +129,7 @@ console.log(data)
         className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg transition duration-300 ease-in-out"
         onClick={() => navigate('/verification')}
       >
-        Verify Yourself
+        Verify Client Details
       </button>
     </div>
 
